@@ -1,4 +1,4 @@
-console.log("lets play");
+
 const startScreenElement = document.querySelector(".start-screen")
 
 const gameBoard = document.querySelector("#game-board");
@@ -10,7 +10,6 @@ const startButton = document.querySelector(".start-button");
 const inventoryElement = document.querySelector(".inventory")
 
 const gameBoardMatrix = [
-    //18*18
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 6, 6, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -84,29 +83,41 @@ gameBoardMatrix.forEach((row, yIndex) => {
     });
 });
 
+
+//states if the player picked a tool a tile or none
+let state;
+
 let toolState = "";
 let tileState = "";
 
 
+
+
 const gameStart = () => {
-    console.log("start");
     startScreenElement.style.display = "none";
     gameBoard.style.display = "grid";
 }
 
-const takeTool = (event) => {
+const getTool = (event) => {
+    state = "tool"
     toolState = event.target.dataset.tool;
 }
 
 
+const clickOnTheBord = (event) => {
+    if (state === "tool") {
+        return hitTile (event);
+    }
+    if (state === "tile") {
+        return setTile(event)
+    }
 
+}
 
 //TODO: think on a batter data type to cheak if the tool fits the tile
 // TODO: think if to create a function that remove the tile
 const hitTile = (event) => {
     let clickedTile = event.target.dataset.tile;
-    clickedTile? 
-
     switch (clickedTile) {
         case "tree":
             if (toolState === "axe") {
@@ -139,21 +150,29 @@ const hitTile = (event) => {
 }
 
 
-const setTile = (event) => {
+const getTile = (event) => {
     if (inventoryElement.dataset.tile) {
+        state = "tile"
         tileState = inventoryElement.dataset.tile;
     }   
 }
 
-// delete inventoryElement.dataset.tile
+const setTile = (event) => {
+    if (!event.target.dataset.tile){
+        event.target.dataset.tile = tileState;
+        tileState = "";
+        delete inventoryElement.dataset.tile;
+    }
+}
 
 
-toolboxElemnt.addEventListener("click", (e)=>(takeTool(e)))
 
-gameBoard.addEventListener("click", (e)=>(hitTile(e)))
+toolboxElemnt.addEventListener("click", (e)=>(getTool(e)))
+
+gameBoard.addEventListener("click", (e)=>(clickOnTheBord(e)))
 
 startScreenElement.addEventListener("click", gameStart)
 
-inventoryElement.addEventListener("click", (e)=>(setTile(e)))
+inventoryElement.addEventListener("click", (e)=>(getTile(e)))
 
 
