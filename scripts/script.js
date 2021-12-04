@@ -15,6 +15,8 @@ const startButton = document.querySelector(".start-button");
 
 const inventoryElement = document.querySelector(".inventory");
 
+const inventoryDivsElements = inventoryElement.querySelectorAll("div");
+
 const nextButton = document.querySelector(".next-button");
 
 const gameBoardNew = document.querySelector("#game-bord-new");
@@ -37,7 +39,7 @@ const gameBoardMatrix = [
     [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
     [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
     [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
-    [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4] ,
+    [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
     [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
     [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
 
@@ -54,6 +56,8 @@ const materialObj = {
     cloud: { className: "cloud", id: 6 },
 };
 
+
+
 // runs on each row
 gameBoardMatrix.forEach((row, yIndex) => {
     // runs on each column
@@ -66,27 +70,27 @@ gameBoardMatrix.forEach((row, yIndex) => {
         switch (currentPositionId) {
             case 1:
                 block.dataset.tile = materialObj.tree.className;
-                
+
                 break;
             case 2:
                 block.dataset.tile = materialObj.leaves.className;
-                
+
                 break;
             case 3:
                 block.dataset.tile = materialObj.rock.className;
-                
+
                 break;
             case 4:
                 block.dataset.tile = materialObj.ground.className;
-                
+
                 break;
             case 5:
                 block.dataset.tile = materialObj.grass.className;
-                
+
                 break;
             case 6:
                 block.dataset.tile = materialObj.cloud.className;
-                
+
                 break;
         }
         gameBoard.appendChild(block);
@@ -117,7 +121,7 @@ const getTool = (event) => {
 
 const clickOnTheBord = (event) => {
     if (state === "tool") {
-        return hitTile (event);
+        return hitTile(event);
     }
     if (state === "tile") {
         return setTile(event)
@@ -132,59 +136,58 @@ const hitTile = (event) => {
     switch (clickedTile) {
         case "tree":
             if (toolState === "axe") {
-                inventoryElement.dataset.tile = clickedTile
+                addToStack(clickedTile);
                 event.target.dataset.tile = "";
             }
-        break;
+            break;
         case "leaves":
             if (toolState === "axe") {
-                inventoryElement.dataset.tile = clickedTile
+                addToStack(clickedTile)
                 event.target.dataset.tile = "";
             }
-        break;
-        case "rock": 
-         if (toolState === "pickaxe") {
-            inventoryElement.dataset.tile = clickedTile
+            break;
+        case "rock":
+            if (toolState === "pickaxe") {
+                addToStack(clickedTile)
                 event.target.dataset.tile = "";
-         }
+            }
+            break;
+
         case "ground":
             if (toolState === "shovel") {
-                inventoryElement.dataset.tile = clickedTile
+                addToStack(clickedTile)
                 event.target.dataset.tile = "";
             }
+            break;
+
         case "grass":
             if (toolState === "shovel") {
-                inventoryElement.dataset.tile = clickedTile
+                addToStack(clickedTile)
                 event.target.dataset.tile = "";
             }
+            break;
+
     }
 }
 
 // TODO: change if its posible to change data set tilenum to tile and to use just the original func (also setTile2)
 const getTile = (event) => {
-    if (inventoryElement.dataset.tile) {
+    if (stack.length > 0) {
         state = "tile"
-        tileState = inventoryElement.dataset.tile;
-    } else {
-        if (inventoryElement.dataset.tilenum) {
-            state = "tile"
-            tileState = inventoryElement.dataset.tilenum;
-        }
-    }   
-
+        tileState = stack[0];
+    }
 }
 
 const setTile = (event) => {
-    if (!event.target.dataset.tile){
-        event.target.dataset.tile = tileState;
-        tileState = "";
-        delete inventoryElement.dataset.tile;
+    if (!event.target.dataset.tile) {
+        event.target.dataset.tile = removeFromStack()
+        console.log(stack);
     }
 }
 
 //TODO: in the second game bord the background is tilenum == 0 and not !tilenum
 const setTile2 = (event) => {
-    if (event.target.dataset.tilenum == "0"){
+    if (event.target.dataset.tilenum == "0") {
         event.target.dataset.tilenum = tileState;
         tileState = "";
         delete inventoryElement.dataset.tilenum;
@@ -204,16 +207,16 @@ const nextWorld = (event) => {
     delete inventoryElement.dataset.tile;
 }
 
-toolboxElement.addEventListener("click", (e)=>(getTool(e)))
+toolboxElement.addEventListener("click", (e) => (getTool(e)))
 
-gameBoard.addEventListener("click", (e)=>(clickOnTheBord(e)))
+gameBoard.addEventListener("click", (e) => (clickOnTheBord(e)))
 
 startButton.addEventListener("click", gameStart)
 
-inventoryElement.addEventListener("click", (e)=>(getTile(e)))
+inventoryElement.addEventListener("click", (e) => (getTile(e)))
 
 
-nextButton.addEventListener("click", (e)=> (nextWorld(e)))
+nextButton.addEventListener("click", (e) => (nextWorld(e)))
 
 
 
@@ -223,11 +226,11 @@ nextButton.addEventListener("click", (e)=> (nextWorld(e)))
 const creatRandomMatrix = () => {
     const arr = [];
     for (let i = 0; i < 10; i++) {
-        arr.push (Math.floor(Math.random * 7));
+        arr.push(Math.floor(Math.random * 7));
         arr[i] = [];
         for (let j = 0; j < 10; j++) {
             arr[i][j] = Math.floor(Math.random() * 7);
-            
+
         }
     }
     return arr;
@@ -236,14 +239,14 @@ const creatRandomMatrix = () => {
 const newMatrix = creatRandomMatrix();
 
 const creatNewBord = (dataArr, rootElement) => {
-    dataArr.forEach ((row, rowIndex)=>{
+    dataArr.forEach((row, rowIndex) => {
         row.forEach((column, columnIndex) => {
             let newElement = document.createElement("div");
             newElement.dataset.tilenum = dataArr[rowIndex][columnIndex];
             rootElement.appendChild(newElement)
         })
     })
-    
+
 }
 
 //chack if the tool that was picked and stored in toolState mach the tile that was click on the bord - returns true/false
@@ -251,20 +254,20 @@ const canHit = (event) => {
     clickedTile = event.target.dataset.tilenum;
     let result;
     switch (toolState) {
-        case "pink":  
-           result =  (clickedTile == "1" || clickedTile =="2")? true : false;
-           break;
+        case "pink":
+            result = (clickedTile == "1" || clickedTile == "2") ? true : false;
+            break;
         case "green":
-            result =  (clickedTile == "3" || clickedTile =="4")? true : false;
+            result = (clickedTile == "3" || clickedTile == "4") ? true : false;
             break;
         case "blue":
-            result =  (clickedTile == "5" || clickedTile =="6")? true : false;
+            result = (clickedTile == "5" || clickedTile == "6") ? true : false;
             break
         default:
             result = false;
     }
     return result;
-    
+
 }
 
 // TODO: how can i desructur event.target.dataset.tilenum
@@ -280,25 +283,40 @@ const clickNewBord = (event) => {
             setTile2(event)
         }
     }
-    
+
 }
 
-creatNewBord (newMatrix, gameBoardNew);
+creatNewBord(newMatrix, gameBoardNew);
 
 gameBoardNew.addEventListener("click", (e) => (clickNewBord(e)));
 
 
 const stack = []
 
+
+
 const addToStack = (item) => {
     stack.unshift(item);
-    stack.pop;
+    if (stack.length > 4){
+        stack.pop();
+    }
+    for (let i = 0; i < stack.length; i++){
+        inventoryDivsElements[i].dataset.tile = stack[i];
+    }
     return
 }
 
 const removeFromStack = () => {
-    if (stack.length > 0) { 
-    return stack.shift()
+    let result;
+    if (stack.length > 0) {
+         result = stack.shift()
     }
+    console.log(stack);
+    for (let i = 0; i < 4; i++){
+        inventoryDivsElements[i].dataset.tile = stack[i];
+    }
+        return result  
 }
+
+
 
