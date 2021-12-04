@@ -288,3 +288,17 @@ creatNewBord (newMatrix, gameBoardNew);
 gameBoardNew.addEventListener("click", (e) => (clickNewBord(e)));
 
 
+const stack = []
+
+const addToStack = (item) => {
+    stack.unshift(item);
+    stack.pop;
+    return
+}
+
+const removeFromStack = () => {
+    if (stack.length > 0) { 
+    return stack.shift()
+    }
+}
+
