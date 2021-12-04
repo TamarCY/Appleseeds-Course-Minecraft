@@ -1,0 +1,48 @@
+
+#game-bord-new {
+    height: 100vmin;
+    width: 100vmin;
+    display: grid;
+    grid-template-rows: repeat(10,1fr);
+    grid-template-columns: repeat(10,1fr);
+    background-color: #000;
+    z-index: 100;
+    display: none;
+}
+
+
+
+div[data-tilenum = "1"] {
+    background-color: #e48a89;
+}
+
+div[data-tilenum = "2"] {
+    background-color: pink;
+}
+
+div[data-tilenum = "3"] {
+    background-color: #00dd33;
+}
+
+div[data-tilenum = "4"] {
+    background-color: #d2d2d2;
+}
+
+div[data-tilenum = "5"] {
+    background-color: #006666;
+}
+
+div[data-tilenum = "6"] {
+    background-color: #00cccc;
+}
+
+div[data-tool= "pink"] {
+    background: url("/assets/images/pink.png") center center/cover;
+}
+div[data-tool= "green"] {
+    background: url("/assets/images/green.png") center center/cover;
+}
+div[data-tool= "blue"] {
+    background: url("/assets/images/blue.png") center center/cover;
+}
+

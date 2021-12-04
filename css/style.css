@@ -113,3 +113,10 @@ div [data-tile = "cloud"] {
 }
 
 
+.next-button {
+    color: goldenrod;
+    font-family: monospace;
+    display: none ;
+}
+
+
