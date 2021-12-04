@@ -187,10 +187,9 @@ const setTile = (event) => {
 
 //TODO: in the second game bord the background is tilenum == 0 and not !tilenum
 const setTile2 = (event) => {
-    if (event.target.dataset.tilenum == "0") {
-        event.target.dataset.tilenum = tileState;
-        tileState = "";
-        delete inventoryElement.dataset.tilenum;
+    if (event.target.dataset.tile == "0") {
+        event.target.dataset.tile = removeFromStack()
+        console.log(stack);
     }
 }
 
@@ -204,7 +203,9 @@ const nextWorld = (event) => {
     toolState = "";
     tileState = "";
     nextButton.style.display = "none";
-    delete inventoryElement.dataset.tile;
+    for (let i = 0; i < 4; i++){
+        delete inventoryDivsElements[i].dataset.tile
+    }
 }
 
 toolboxElement.addEventListener("click", (e) => (getTool(e)))
@@ -242,7 +243,7 @@ const creatNewBord = (dataArr, rootElement) => {
     dataArr.forEach((row, rowIndex) => {
         row.forEach((column, columnIndex) => {
             let newElement = document.createElement("div");
-            newElement.dataset.tilenum = dataArr[rowIndex][columnIndex];
+            newElement.dataset.tile = dataArr[rowIndex][columnIndex];
             rootElement.appendChild(newElement)
         })
     })
@@ -251,7 +252,7 @@ const creatNewBord = (dataArr, rootElement) => {
 
 //chack if the tool that was picked and stored in toolState mach the tile that was click on the bord - returns true/false
 const canHit = (event) => {
-    clickedTile = event.target.dataset.tilenum;
+    clickedTile = event.target.dataset.tile;
     let result;
     switch (toolState) {
         case "pink":
@@ -274,9 +275,9 @@ const canHit = (event) => {
 const clickNewBord = (event) => {
     if (state === "tool") {
         if (canHit(event)) {
-            tileState = event.target.dataset.tilenum;
-            inventoryElement.dataset.tilenum = tileState;
-            event.target.dataset.tilenum = 0;
+            tileState = event.target.dataset.tile;
+            addToStack(tileState)
+            event.target.dataset.tile = 0;
         }
     } else {
         if (state === "tile") {

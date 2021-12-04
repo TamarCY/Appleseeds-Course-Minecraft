@@ -12,27 +12,27 @@
 
 
 
-div[data-tilenum = "1"] {
+div[data-tile = "1"] {
     background-color: #e48a89;
 }
 
-div[data-tilenum = "2"] {
+div[data-tile = "2"] {
     background-color: pink;
 }
 
-div[data-tilenum = "3"] {
+div[data-tile = "3"] {
     background-color: #00dd33;
 }
 
-div[data-tilenum = "4"] {
+div[data-tile = "4"] {
     background-color: #d2d2d2;
 }
 
-div[data-tilenum = "5"] {
+div[data-tile = "5"] {
     background-color: #006666;
 }
 
-div[data-tilenum = "6"] {
+div[data-tile = "6"] {
     background-color: #00cccc;
 }
 

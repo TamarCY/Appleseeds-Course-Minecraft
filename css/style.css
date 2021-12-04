@@ -60,8 +60,8 @@ body {
 }
 
 .tool {
-    width: 70px;
-    height: 70px;
+    width: 90px;
+    height: 90px;
     background-color: lightslategrey;
     margin: 10px;
 }
@@ -70,6 +70,7 @@ body {
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: repeat(4,1fr);
+    row-gap: 8px;
     width: 50px;
     height: 200px;
     /* border: lightslategrey 2px solid; */
