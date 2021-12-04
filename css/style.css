@@ -55,8 +55,6 @@ body {
     flex-direction: column;
     height: 60%;
     justify-content: center;
-    
-    
 }
 
 .tool {
@@ -73,8 +71,15 @@ body {
     row-gap: 8px;
     width: 50px;
     height: 200px;
-    /* border: lightslategrey 2px solid; */
     margin: 20px;
+}
+
+.next-button {
+    color: #000;
+    font-family: monospace;
+    display: none ;
+    padding: 5px;
+    background-color: #fff;
 }
 
 
@@ -117,12 +122,6 @@ div [data-tile = "cloud"] {
 }
 
 
-.next-button {
-    color: #000;
-    font-family: monospace;
-    display: none ;
-    padding: 5px;
-    background-color: #fff;
-}
+
 
 
