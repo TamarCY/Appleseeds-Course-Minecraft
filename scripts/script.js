@@ -9,9 +9,6 @@ const toolsElements = toolboxElement.querySelectorAll("div")
 // TODO: how to target nth child element in js
 // const secondToolElement = document.querySelector(".tool-box:nth-child(2)");
 
-// const firstToolElement = document.querySelector(".axe")
-// const secondToolElement = document.querySelector(".pickaxe")
-// const thirdToolElement = document.querySelector(".shovel")
 
 
 const startButton = document.querySelector(".start-button");
@@ -105,6 +102,7 @@ let tileState = "";
 
 
 
+
 const gameStart = () => {
     startScreenElement.style.display = "none";
     gameBoard.style.display = "grid";
@@ -114,7 +112,6 @@ const gameStart = () => {
 const getTool = (event) => {
     state = "tool";
     toolState = event.target.dataset.tool;
-    console.log(toolState);
 }
 
 
@@ -163,18 +160,15 @@ const hitTile = (event) => {
     }
 }
 
-// TODO: change if its posible to change data set tilenum to tile and to use just the original func 
+// TODO: change if its posible to change data set tilenum to tile and to use just the original func (also setTile2)
 const getTile = (event) => {
-    console.log("click");
     if (inventoryElement.dataset.tile) {
         state = "tile"
         tileState = inventoryElement.dataset.tile;
-        console.log(state, tileState);
     } else {
         if (inventoryElement.dataset.tilenum) {
             state = "tile"
             tileState = inventoryElement.dataset.tilenum;
-            console.log(state, tileState);
         }
     }   
 
@@ -188,6 +182,15 @@ const setTile = (event) => {
     }
 }
 
+//TODO: in the second game bord the background is tilenum == 0 and not !tilenum
+const setTile2 = (event) => {
+    if (event.target.dataset.tilenum == "0"){
+        event.target.dataset.tilenum = tileState;
+        tileState = "";
+        delete inventoryElement.dataset.tilenum;
+    }
+}
+
 const nextWorld = (event) => {
     gameBoard.style.display = "none";
     gameBoardNew.style.display = "grid";
@@ -197,6 +200,8 @@ const nextWorld = (event) => {
     state = "";
     toolState = "";
     tileState = "";
+    nextButton.style.display = "none";
+    delete inventoryElement.dataset.tile;
 }
 
 toolboxElement.addEventListener("click", (e)=>(getTool(e)))
@@ -231,7 +236,6 @@ const creatRandomMatrix = () => {
 const newMatrix = creatRandomMatrix();
 
 const creatNewBord = (dataArr, rootElement) => {
-    console.log("test");
     dataArr.forEach ((row, rowIndex)=>{
         row.forEach((column, columnIndex) => {
             let newElement = document.createElement("div");
@@ -243,34 +247,40 @@ const creatNewBord = (dataArr, rootElement) => {
 }
 
 //chack if the tool that was picked and stored in toolState mach the tile that was click on the bord - returns true/false
-const canHit = () => {
+const canHit = (event) => {
+    clickedTile = event.target.dataset.tilenum;
     let result;
     switch (toolState) {
         case "pink":  
-           result =  (tileState == "1" || tileState =="2")? true : false;
+           result =  (clickedTile == "1" || clickedTile =="2")? true : false;
            break;
         case "green":
-            result =  (tileState == "3" || tileState =="4")? true : false;
+            result =  (clickedTile == "3" || clickedTile =="4")? true : false;
             break;
         case "blue":
-            result =  (tileState == "5" || tileState =="6")? true : false;
+            result =  (clickedTile == "5" || clickedTile =="6")? true : false;
             break
         default:
             result = false;
     }
-    console.log(result);
     return result;
     
 }
 
 // TODO: how can i desructur event.target.dataset.tilenum
 const clickNewBord = (event) => {
-    tileState = event.target.dataset.tilenum;
-    if (canHit()) {
-        inventoryElement.dataset.tilenum = tileState;
-        console.log(inventoryElement.dataset.tilenum);
-        delete event.target.dataset.tilenum;
+    if (state === "tool") {
+        if (canHit(event)) {
+            tileState = event.target.dataset.tilenum;
+            inventoryElement.dataset.tilenum = tileState;
+            event.target.dataset.tilenum = 0;
+        }
+    } else {
+        if (state === "tile") {
+            setTile2(event)
+        }
     }
+    
 }
 
 creatNewBord (newMatrix, gameBoardNew);
