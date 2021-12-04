@@ -13,8 +13,22 @@ body {
 .start-screen {
     width: 100vmin;
     height: 100vmin;
-    background-color: greenyellow;
+    background: url(../assets/images/minecraft_icon.jpeg) no-repeat  center/cover;
 }
+
+.start-button {
+    width: 150px;
+    height: 50px;
+    border: 3px #000 solid;
+    background-color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: monospace;
+    font-size: 30px;
+    margin: 85% auto 0;
+}
+
 
 #game-board {
     background-color: rgb(21, 147, 215);
@@ -27,7 +41,7 @@ body {
 }
 
 .side-bar {
-    width: 15vw;
+    width: 10vw;
     height: 100vh;
     background-color: #000;
     display: flex;
@@ -60,23 +74,38 @@ body {
 }
 
 
+div [data-tool="axe"]{
+    background: url(../assets/images/SeekPng.com_minecraft-chicken-png_10095783.png) center center/cover ;
+}
+
+
+div [data-tool="pickaxe"]{
+    background: url(../assets/images/SeekPng.com_diamond-pickaxe-png_1552980\ 2.png) center center/cover ;
+}
+
+div [data-tool="shovel"]{
+    background: url(../assets/images/SeekPng.com_shovel-png_247019.png) center center/cover ;
+}
+
+
 div [data-tile = "tree"] {
     background-color: brown;
+    background: url(../assets/images/tree.jpeg) center center;
 }
 div [data-tile = "leaves"] {
-    background-color: chartreuse;
+    background: url(../assets/images/leaves.jpeg) center center;
 }
   
 div [data-tile = "rock"] {
-    background-color: grey;
+    background: url(../assets/images/stone.jpeg) center center;
 }
   
 div [data-tile = "ground"] {
-    background-color: burlywood;
+    background: url(../assets/images/soil.jpeg) center center/cover;
 }
   
 div [data-tile = "grass"] {
-    background-color: green;
+    background: url(../assets/images/grass.png) center center/cover;
 }
 
 div [data-tile = "cloud"] {

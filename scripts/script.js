@@ -171,7 +171,7 @@ toolboxElemnt.addEventListener("click", (e)=>(getTool(e)))
 
 gameBoard.addEventListener("click", (e)=>(clickOnTheBord(e)))
 
-startScreenElement.addEventListener("click", gameStart)
+startButton.addEventListener("click", gameStart)
 
 inventoryElement.addEventListener("click", (e)=>(getTile(e)))
 
