@@ -12,7 +12,6 @@ const toolsElements = toolboxElement.querySelectorAll("div")
 // TODO: how to target nth child element in js
 // const secondToolElement = document.querySelector(".tool-box:nth-child(2)");
 
-
 const inventoryElement = document.querySelector(".inventory");
 
 const inventoryDivsElements = inventoryElement.querySelectorAll("div");
