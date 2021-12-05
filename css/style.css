@@ -62,16 +62,19 @@ body {
     height: 90px;
     background-color: lightslategrey;
     margin: 10px;
+    border-radius: 6px;
 }
 
 .inventory {
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: repeat(4,1fr);
-    row-gap: 8px;
+    row-gap: 10px;
     width: 50px;
     height: 200px;
     margin: 20px;
+    border-radius: 6px;
+    padding: 10px;
 }
 
 .next-button {
@@ -82,6 +85,9 @@ body {
     background-color: #fff;
 }
 
+.tool.focus, .inventory.focus{
+    box-shadow: 0px 0px 26px 5px rgba(127, 255, 115, 0.52)
+}
 
 div [data-tool="axe"]{
     background: url(../assets/images/SeekPng.com_minecraft-chicken-png_10095783.png) center center/cover ;

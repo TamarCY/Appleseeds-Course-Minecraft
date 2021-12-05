@@ -84,6 +84,7 @@ gameBoardMatrix.forEach((row, rowIndex) => {
 let state;
 let toolState = "";
 let tileState = "";
+let focusElement;
 
 //Store the last 4 selected tiles
 const tileStack = [];
@@ -123,6 +124,11 @@ const gameStart = () => {
 const getTool = (event) => {
     state = "tool";
     toolState = event.target.dataset.tool;
+    if (focusElement) {
+        focusElement.classList.remove("focus");
+    }
+    focusElement = event.target;
+    focusElement.classList.add("focus");
 }
 
 
@@ -171,11 +177,16 @@ const hitTile = (event) => {
 }
 
 //When inventory is clicked, change takes the tile from the stack and ready to place it on the game board
-const getTile = () => {
+const getTile = (event) => {
     if (tileStack.length > 0) {
         state = "tile"
         tileState = tileStack[0];
     }
+    if (focusElement) {
+        focusElement.classList.remove("focus");
+    }
+    focusElement = inventoryElement;
+    focusElement.classList.add("focus");
 }
 
 
@@ -211,15 +222,24 @@ const clickOnTheBord = (event) => {
 //The second game
 
 const nextWorld = () => {
+    //Remove the first game board 
     gameBoard.style.display = "none";
+    //Show the new board
     gameBoardNew.style.display = "grid";
+    //Replace the tools elemnts
     toolsElements[0].dataset.tool = "pink";
     toolsElements[1].dataset.tool = "green";
     toolsElements[2].dataset.tool = "blue";
+    //Clear the states
     state = "";
     toolState = "";
     tileState = "";
+    //Clear the focus element
+    focusElement.classList.remove("focus");
+    focusElement = "";
+    //Remove the "next world" button
     nextButton.style.display = "none";
+    //Clear the inventory
     for (let i = 0; i < 4; i++) {
         delete inventoryDivsElements[i].dataset.tile;
         tileStack.pop();
@@ -303,7 +323,7 @@ gameBoard.addEventListener("click", (e) => (clickOnTheBord(e)))
 
 startButton.addEventListener("click", gameStart)
 
-inventoryElement.addEventListener("click", getTile)
+inventoryElement.addEventListener("click", (e) => (getTile(e)))
 
 nextButton.addEventListener("click", nextWorld)
 
