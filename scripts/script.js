@@ -20,6 +20,12 @@ const nextButton = document.querySelector(".next-button");
 
 const gameBoardNew = document.querySelector("#game-bord-new");
 
+const TILES = ["tree", "leaves", "rock", "ground", "grass", "cloud"];
+
+const GRID_SIZE = 10;
+
+const TILE_TYPE_COUNT = 6;
+
 const gameBoardMatrix = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -45,36 +51,19 @@ const gameBoardMatrix = [
 
 ];
 
-//Create the game bord divs from the matrix
+// Create the game board divs from the matrix
 gameBoardMatrix.forEach((row, rowIndex) => {
     // Runs on each column
     row.forEach((column, columnIndex) => {
         // Save current position id
-        const currentPositionId = gameBoardMatrix[rowIndex][columnIndex];
+        const tileType = gameBoardMatrix[rowIndex][columnIndex];
         // Create a block
         const block = document.createElement("div");
         // Add data-tile type by id
-        switch (currentPositionId) {
-            case 1:
-                block.dataset.tile = "tree";
-                break;
-            case 2:
-                block.dataset.tile = "leaves";
-                break;
-            case 3:
-                block.dataset.tile = "rock";
-                break;
-            case 4:
-                block.dataset.tile = "ground";
-                break;
-            case 5:
-                block.dataset.tile = "grass";
-                break;
-            case 6:
-                block.dataset.tile = "cloud";
-                break;
+        if (tileType !== 0) {
+            block.dataset.tile = TILES[tileType - 1];
         }
-        //Appand each new block div to the gameBord element 
+        // Append each new block div to the gameBoard element 
         gameBoard.appendChild(block);
     });
 });
@@ -112,15 +101,13 @@ const removeFromStack = () => {
     return result
 }
 
-
-
 const gameStart = () => {
     startScreenElement.style.display = "none";
     gameBoard.style.display = "grid";
     nextButton.style.display = "block"
 }
 
-//When a tool is clicked
+// When a tool is clicked
 const getTool = (event) => {
     state = "tool";
     toolState = event.target.dataset.tool;
@@ -134,49 +121,25 @@ const getTool = (event) => {
 
 
 
-//TODO: think on a batter data type to cheak if the tool fits the tile
+//TODO: think on a better data type to check if the tool fits the tile
 // TODO: think if to create a function that remove the tile
 const hitTile = (event) => {
-    let clickedTile = event.target.dataset.tile;
-    switch (clickedTile) {
-        case "tree":
-            if (toolState === "axe") {
-                addToStack(clickedTile);
-                event.target.dataset.tile = "";
-            }
-            break;
-        case "leaves":
-            if (toolState === "axe") {
-                addToStack(clickedTile)
-                event.target.dataset.tile = "";
-            }
-            break;
-        case "rock":
-            if (toolState === "pickaxe") {
-                addToStack(clickedTile)
-                event.target.dataset.tile = "";
-            }
-            break;
-
-        case "ground":
-            if (toolState === "shovel") {
-                addToStack(clickedTile)
-                event.target.dataset.tile = "";
-            }
-            break;
-
-        case "grass":
-            if (toolState === "shovel") {
-                addToStack(clickedTile)
-                event.target.dataset.tile = "";
-            }
-            break;
-
+    let tileType = event.target.dataset.tile;
+    const tileTypeToTool = {
+        tree: "axe",
+        leaves: "axe",
+        rock: "pickaxe",
+        ground: "shovel",
+        grass: "shovel"
     }
-    
+    const tool = tileTypeToTool[tileType];
+    if (toolState === tool) {
+        addToStack(tileType);
+        event.target.dataset.tile = "";
+    }
 }
 
-//When inventory is clicked, change takes the tile from the stack and ready to place it on the game board
+// When inventory is clicked, change takes the tile from the stack and ready to place it on the game board
 const getTile = (event) => {
     if (tileStack.length > 0) {
         state = "tile"
@@ -190,14 +153,14 @@ const getTile = (event) => {
 }
 
 
-//Place the tile on the board in the first geme 
+// Place the tile on the board in the first geme 
 const setTile = (event) => {
     if (!event.target.dataset.tile) {
-        event.target.dataset.tile = removeFromStack()
+        event.target.dataset.tile = removeFromStack();
     }
 }
 
-//Place the tile on the board in the second geme 
+// Place the tile on the board in the second geme 
 const setTile2 = (event) => {
     if (event.target.dataset.tile == "0") {
         event.target.dataset.tile = removeFromStack()
@@ -205,7 +168,7 @@ const setTile2 = (event) => {
 }
 
 
-const clickOnTheBord = (event) => {
+const clickOnTheBoard = (event) => {
     if (state === "tool") {
         return hitTile(event);
     }
@@ -247,36 +210,33 @@ const nextWorld = () => {
 }
 
 
-const creatRandomMatrix = () => {
-    const arr = [];
-    for (let i = 0; i < 10; i++) {
-        arr.push(Math.floor(Math.random * 7));
-        arr[i] = [];
-        for (let j = 0; j < 10; j++) {
-            arr[i][j] = Math.floor(Math.random() * 7);
-
+const createRandomMatrix = () => {
+    const result = [];
+    for (let i = 0; i < GRID_SIZE; i++) {
+        result[i] = [];
+        for (let j = 0; j < GRID_SIZE; j++) {
+            result[i][j] = Math.floor(Math.random() * (TILE_TYPE_COUNT + 1));
         }
     }
-    return arr;
+    return result;
 }
 
 
-const creatNewBord = (dataArr, rootElement) => {
-    dataArr.forEach((row, rowIndex) => {
+const creatNewBoard = (data, parent) => {
+    data.forEach((row, rowIndex) => {
         row.forEach((column, columnIndex) => {
             let newElement = document.createElement("div");
-            newElement.dataset.tile = dataArr[rowIndex][columnIndex];
-            rootElement.appendChild(newElement)
+            newElement.dataset.tile = data[rowIndex][columnIndex];
+            parent.appendChild(newElement)
         })
     })
-
 }
 
-//Creating the second board
+// Creating the second board
 
-const newMatrix = creatRandomMatrix();
+const newMatrix = createRandomMatrix();
 
-creatNewBord(newMatrix, gameBoardNew);
+creatNewBoard(newMatrix, gameBoardNew);
 
 
 
@@ -319,7 +279,7 @@ const clickNewBord = (event) => {
 
 toolboxElement.addEventListener("click", (e) => (getTool(e)))
 
-gameBoard.addEventListener("click", (e) => (clickOnTheBord(e)))
+gameBoard.addEventListener("click", (e) => (clickOnTheBoard(e)))
 
 startButton.addEventListener("click", gameStart)
 
